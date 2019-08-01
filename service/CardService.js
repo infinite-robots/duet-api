@@ -6,6 +6,10 @@ class CardService {
   constructor() {
     //
   }
+
+  swipe(cardSwipe) {
+    console.log('swipe: ' + JSON.stringify(cardSwipe));
+  }
     
   getStack() {
     let cards = [];

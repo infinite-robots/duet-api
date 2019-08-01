@@ -17,9 +17,14 @@ app.get('/', function (req, res) {
 });
 
 
-app.get('/cards', function (req, res) {
-  res.status(200).send(cardService.getStack());
-});
+app.route('/card')
+  .get(function (req, res) {
+    res.status(200).send(cardService.getStack());
+  })
+app.route('/card/swipe')
+  .post(function (req, res) {
+    res.status(200).send(cardService.swipe(req.body));
+  });
 
 
 app.route('/user')
