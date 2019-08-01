@@ -1,10 +1,16 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+
 var app = express();
+app.use(bodyParser.json());
+
 const { CardService } = require('./service/CardService.js');
 const { UserService } = require('./service/UserService.js');
+const { BandService } = require('./service/BandService.js');
 
 const cardService = new CardService();
 const userService = new UserService();
+const bandService = new BandService();
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -16,11 +22,18 @@ app.get('/cards', function (req, res) {
 });
 
 
+app.route('/user')
+  .get(function (req, res) {
+    res.send(userService.getUsers());
+  }).post(function (req, res) {
+    let id = userService.addUser(req.body);
+    res.send(userService.getUser(id));
+  });
 
-app.get('/users', function (req, res) {
-  res.send(userService.getUsers());
-});
-
+app.route('/band')
+  .get(function (req, res) {
+    res.send(bandService.getBands());
+  });
 
 
 var port = process.env.PORT || 3000;
