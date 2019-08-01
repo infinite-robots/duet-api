@@ -27,16 +27,24 @@ app.route('/card/swipe')
   });
 
 
+app.route('/users/:id')
+  .get((req, res)=> {
+    res.send(userService.getUser(req.params.id));
+  });
+
+app.route('/users')
+    .get((req, res)=> {
+        res.send(userService.getUsers());
+    });
+
 app.route('/user')
-  .get(function (req, res) {
-    res.send(userService.getUsers());
-  }).post(function (req, res) {
+    .post((req, res) => {
     let id = userService.addUser(req.body);
     res.send(userService.getUser(id));
   });
 
 app.route('/band')
-  .get(function (req, res) {
+  .get((req, res) => {
     res.send(bandService.getBands());
   });
 

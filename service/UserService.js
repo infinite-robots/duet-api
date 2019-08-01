@@ -26,7 +26,7 @@ class UserService {
   getUser(id) {
     let user;
     user = {
-      id:'1234',
+      id: id,
       name:'Jenn',
       age:34,
       bio:'Hello Duet',
