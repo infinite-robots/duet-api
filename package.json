@@ -1,0 +1,22 @@
+{
+  "name": "duet-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/infinite-robots/duet-api.git"
+  },
+  "author": "infinite-robots",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/infinite-robots/duet-api/issues"
+  },
+  "homepage": "https://github.com/infinite-robots/duet-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
