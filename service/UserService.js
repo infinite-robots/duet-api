@@ -47,7 +47,9 @@ class UserService {
       name: req.body.name,
       bio: req.body.bio,
       gender: req.body.gender,
-      age: req.body.age
+      age: req.body.age,
+      createdAt: new Date(),
+      updatedAt : new Date()
     };
     console.error("Saving", userDto);
     return User
