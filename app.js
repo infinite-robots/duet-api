@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
 
 
 app.get('/cards', function (req, res) {
-  res.send(cardService.getStack());
+  res.status(200).send(cardService.getStack());
 });
 
 
@@ -23,6 +23,8 @@ app.get('/users', function (req, res) {
 
 
 
-app.listen(8080, function () {
-  console.log('Example app listening on port 8080!');
+var port = process.env.PORT || 3000;
+
+var server = app.listen(port, function () {
+  console.log('Server running at http://127.0.0.1:' + port + '/');
 });
