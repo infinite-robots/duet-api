@@ -36,8 +36,7 @@ app.route('/users')
   .get((req, res)=> {
       res.send(userService.getUsers());
   }).post((req, res) => {
-    let id = userService.addUser(req.body);
-    res.send(userService.getUser(id));
+    userService.addUser(req, res);
   });
 
 app.route('/bands')
