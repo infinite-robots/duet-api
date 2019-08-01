@@ -17,11 +17,11 @@ app.get('/', function (req, res) {
 });
 
 
-app.route('/card')
+app.route('/cards')
   .get(function (req, res) {
     res.status(200).send(cardService.getStack());
   })
-app.route('/card/swipe')
+app.route('/cards/swipe')
   .post(function (req, res) {
     res.status(200).send(cardService.swipe(req.body));
   });
@@ -33,17 +33,14 @@ app.route('/users/:id')
   });
 
 app.route('/users')
-    .get((req, res)=> {
-        res.send(userService.getUsers());
-    });
-
-app.route('/user')
-    .post((req, res) => {
+  .get((req, res)=> {
+      res.send(userService.getUsers());
+  }).post((req, res) => {
     let id = userService.addUser(req.body);
     res.send(userService.getUser(id));
   });
 
-app.route('/band')
+app.route('/bands')
   .get((req, res) => {
     res.send(bandService.getBands());
   });
