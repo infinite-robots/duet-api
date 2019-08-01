@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/infinite-robots/duet-api#readme",
   "dependencies": {
+    "aws-sdk": "latest",
     "express": "latest",
-    "aws-sdk": "latest"
+    "pg": "^7.12.0",
+    "sequelize": "^5.12.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^5.5.0"
   }
 }

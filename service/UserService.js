@@ -1,4 +1,7 @@
 const { CompassUtil } = require('./utils/CompassUtil.js');
+const User = require('../server/models').user;
+
+
 
 const compassUtil = new CompassUtil();
 
@@ -39,11 +42,18 @@ class UserService {
     return user;
   }
 
-  addUser(user) {
-    user.id = 12345;
-    user.compass = CompassUtil.getDefaultCompass();
-    console.log('Adding user: ' + user);
-    return user;
+  addUser(req,res) {
+    let userDto = {
+      name: req.body.name,
+      bio: req.body.bio,
+      gender: req.body.gender,
+      age: req.body.age
+    };
+    console.error("Saving", userDto);
+    return User
+        .create(userDto)
+        .then(user => res.status(201).send(user))
+        .catch(error => res.status(400).send(error));
   }
 }
 
