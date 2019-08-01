@@ -28,15 +28,15 @@ app.route('/cards/swipe')
 
 
 app.route('/users/:id')
-  .get((req, res)=> {
-    res.send(userService.getUser(req.params.id));
+  .get((req, res) => {
+    userService.getUser(req.params.id).then(user => res.send(user));
   });
 
 app.route('/users')
   .get((req, res)=> {
       res.send(userService.getUsers());
   }).post((req, res) => {
-    userService.addUser(req, res);
+    userService.addUser(req.body, res);
   });
 
 app.route('/bands')
