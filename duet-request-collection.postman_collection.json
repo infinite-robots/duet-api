@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "96d80e1a-9770-44c3-9100-a64c01c7b3c7",
+		"name": "duet-request-collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Next Cards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cards"
+					]
+				},
+				"description": "Get the next cards for a user"
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Get all users"
+			},
+			"response": []
+		}
+	]
+}
