@@ -6,6 +6,10 @@ class CardService {
   constructor() {
     //
   }
+
+  swipe(cardSwipe) {
+    console.log('swipe: ' + JSON.stringify(cardSwipe));
+  }
     
   getStack() {
     let cards = [];
@@ -30,7 +34,7 @@ class CardService {
         img:'https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwjknpvEk-LjAhUyU98KHX3mCq0QjRx6BAgBEAQ&url=http%3A%2F%2Fwww.drunkenwerewolf.com%2Freviews%2Fglass-animals-zaba%2F&psig=AOvVaw0RfY-HbdEFNkJRdW8HRUhp&ust=1564765391130076',
         audio:'http://google.com'
       },
-      compass: CompassUtil.getDefaultCompass()
+      genre: 'rock'
     });
     return cards;
   }

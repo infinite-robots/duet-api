@@ -21,7 +21,7 @@ class UserService {
         img:'https://images.unsplash.com/photo-1446040945968-d303ecb10b4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
         audio: 'http://google.com'
       },
-      compass:null
+      compass:CompassUtil.getDefaultCompass()
     });
     return users;
   }
