@@ -7,7 +7,7 @@ class CompassUtil {
   }
     
   static default(isNpc) {
-    let compass = DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: isNpc ? DEFAULT_GENRE_SCORE : Math.sqrt(Math.random() * 100) * 10 }), {});
+    let compass = DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: isNpc ? DEFAULT_GENRE_SCORE : Math.sqrt(Math.random() * 95 + 5) * 10 }), {});
     return compass;
   }
 
