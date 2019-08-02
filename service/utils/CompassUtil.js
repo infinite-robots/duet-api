@@ -45,18 +45,27 @@ class CompassUtil {
 
     // Score all genres
     DEFAULT_GENRES.forEach(function(genre) {
-      likes[genre].score = numberDisliked + numberLiked; // Default score to seed on
-      likes[genre].score += likes[genre].likes;
-      likes[genre].score -= likes[genre].dislikes;
-      likes[genre].contrastScore = likes[genre].score - numberLiked;
-      totalPoints += likes[genre].score;
-      totalContrastPoints += likes[genre].contrastScore;
+      // likes[genre].score = numberDisliked + numberLiked; // Default score to seed on
+      likes[genre].score = 50;
+      likes[genre].score += likes[genre].likes * 5;
+      likes[genre].score -= likes[genre].dislikes * 5;
+      // likes[genre].contrastScore = likes[genre].score - numberLiked;
+      // totalPoints += likes[genre].score;
+      // totalContrastPoints += likes[genre].contrastScore;
+
     });
 
     // Normalize
     DEFAULT_GENRES.forEach(function(genre) {
-      compass[genre] = ((Math.sqrt(likes[genre].score / totalPoints * 100) * 10)
-      + (((likes[genre].contrastScore / totalContrastPoints))*100) * 3) / 4 ;
+      // compass[genre] = ((Math.sqrt(likes[genre].score / totalPoints * 100) * 10)
+      // + (((likes[genre].contrastScore / totalContrastPoints))*100) * 3) / 4 ;
+      compass[genre] = likes[genre].score;
+      if(compass[genre] > 100) {
+        compass[genre] = 100;
+      }
+      if(compass[genre] < 0) {
+        compass[genre] = 0;
+      }
     });
 
     return compass;
