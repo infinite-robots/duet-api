@@ -1,8 +1,10 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-var app = express();
+const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const { CardService } = require('./service/CardService.js');
 const { UserService } = require('./service/UserService.js');
@@ -45,8 +47,8 @@ app.route('/bands')
   });
 
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-var server = app.listen(port, function () {
+const server = app.listen(port, function () {
   console.log('Server running at http://127.0.0.1:' + port + '/');
 });
