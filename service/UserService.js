@@ -131,16 +131,15 @@ class UserService {
 
 
   async getChatsForMatch(id) {
-    console.log('Finding users chat by id:'+ id)
     return await Chat.findAll({
       where: {
         userId: id
       },order: [
         ['createdAt', 'ASC']
       ],
+      group: ['chatterId'],
       attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
     });
-
   }
 
 

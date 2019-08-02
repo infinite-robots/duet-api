@@ -65,6 +65,13 @@ app.route('/chats/:id')
         })
     });
 
+app.route('/chats-for-match/:id').get((req, res)=> {
+    userService.getChatsForMatch(req.params.id).then(value => {
+        res.status(200).send(value);
+    }).catch(reason => {
+        res.status(500).send(reason);
+    })
+});
 app.route('/interest-and-chats/:id')
     .get((req, res) => {
         userService.interestCount(req.params.id).then(value => {
