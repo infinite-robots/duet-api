@@ -150,7 +150,7 @@ class UserService {
 
   async getMatches(id) {
     let matches = await db.sequelize.query(
-      "SELECT * FROM public.people_interests where \"user_id\" = "+ id, { type: Sequelize.QueryTypes.SELECT});
+      "SELECT * FROM public.people_interests where \"user_id\" = "+ id + " and matched = true", { type: Sequelize.QueryTypes.SELECT});
     let response = [];
     for(const match of matches) {
       let lastMessages = await db.sequelize.query("SELECT * FROM \"Chats\" WHERE id = (SELECT MAX(id) FROM \"Chats\" where \"chatterId\" = " + id + ")", { type: Sequelize.QueryTypes.SELECT});
