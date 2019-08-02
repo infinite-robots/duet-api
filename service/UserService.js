@@ -199,7 +199,6 @@ class UserService {
    * @returns {Promise<*>}
    */
   async setViewed(id, chatId) {
-
     return await db.sequelize.query("UPDATE \"Chats\"  SET \"isRead\" = true WHERE \"userId\" = "+id +" AND " + "\"chatterId\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
   }
 
@@ -283,7 +282,7 @@ class UserService {
   }
 
   chatCount(id) {
-    return db.sequelize.query("SELECT COUNT(\"Chats\".\"userId\") as chatCount FROM \"Chats\" where \"Chats\".\"userId\" =" + id, { type: Sequelize.QueryTypes.SELECT});
+    return db.sequelize.query("SELECT COUNT(\"Chats\".\"userId\") as chatCount FROM \"Chats\" where isRead=false AND \"Chats\".\"userId\" =" + id, { type: Sequelize.QueryTypes.SELECT});
   }
 }
 
