@@ -33,17 +33,24 @@ class CardService {
   }
 
   async getStack(id) {
+    let newUser = false; 
+    let interests = await userService.getMusicInterest(id);
+    if(interests === null || interests.length === 0) {
+      newUser = true;
+    }
     const bands = shuffle(JSON.parse(JSON.stringify(await bandService.getUnseenBands(id))))
       .map(band => ({...band, type: 'band'}));
 
-    const people = shuffle(JSON.parse(JSON.stringify(await userService.getUnseenUsers(id))))
-      .map(person => ({...person, type: 'person'})).slice(0, 3);
-
-
-    for (const person of people) {
-      person.compass = CompassUtil.generate(await userService.getMusicInterest(person.id), true);
+    let people = [];
+    if(!newUser) {
+      people = shuffle(JSON.parse(JSON.stringify(await userService.getUnseenUsers(id))))
+        .map(person => ({...person, type: 'person'})).slice(0, 3);
+        for (const person of people) {
+          person.compass = CompassUtil.generate(await userService.getMusicInterest(person.id), true);
+        }
     }
 
+    let bandsLength = newUser ? 6 : 3;
     return shuffle([...bands.slice(0, 4), ...people]);
   }
 }
