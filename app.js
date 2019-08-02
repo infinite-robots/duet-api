@@ -44,7 +44,7 @@ app.route('/users')
   .get((req, res)=> {
       userService.getUsers().then(users => res.send(users));
   }).post((req, res) => {
-    userService.addUser(req.body, res);
+      userService.addUser(req.body, res);
   });
 
 app.route('/bands')
@@ -64,6 +64,16 @@ app.route('/chats')
 app.route('/chats/:id')
     .get((req, res)=> {
         userService.getMyChats(req.params.id).then(value => {
+            res.status(200).send(value);
+        }).catch(reason => {
+            res.status(500).send(reason);
+        })
+    });
+
+
+app.route('/chats/:id/duet/:chatId')
+    .get((req, res)=> {
+        userService.getMyDuetChats(req.params.id, req.params.chatId).then(value => {
             res.status(200).send(value);
         }).catch(reason => {
             res.status(500).send(reason);
