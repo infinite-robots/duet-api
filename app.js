@@ -58,7 +58,11 @@ app.route('/bands')
 
 app.route('/chats')
     .post((req, res) => {
-        userService.chat(req.body, res);
+        userService.chat(req.body, res).then(value => {
+            userService.establishChatRelationship(value, res).then(value1 => {
+                res.status(201).send(value1);
+            })
+        });
     });
 
 app.route('/chats/:id')
@@ -73,7 +77,7 @@ app.route('/chats/:id')
 
 app.route('/chats/:id/duet/:chatId')
     .get((req, res)=> {
-        userService.getMyDuetChats(req.params.id, req.params.chatId).then(value => {
+        userService.getMyDuetChatsMessages(req.params.id, req.params.chatId).then(value => {
             res.status(200).send(value);
         }).catch(reason => {
             res.status(500).send(reason);

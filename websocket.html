@@ -27,40 +27,37 @@
 <script>
     (function () {
         // if user is running mozilla then use it's built-in WebSocket
-        window.WebSocket = window.WebSocket || window.MozWebSocket;
-
-        var connection = new WebSocket('ws://duet-api-docker.9dqvkk3fep.us-east-1.elasticbeanstalk.com:1337');
-
-        connection.onopen = function () {
-            // connection is opened and ready to use
-            console.log("Connected to ", connection);
-        };
-
-        connection.onerror = function (error) {
-            // an error occurred when sending/receiving data
-            console.log(error)
-        };
-
-        connection.onmessage = function (message) {
-            // try to decode json (I assume that each message
-            let parsedMessage = JSON.parse(message.data);
-            $('#messages').append(`<li>${parsedMessage.name} : ${parsedMessage.message} MatchId: ${parsedMessage.matchId}</li>`)
-            // handle incoming message
-        };
 
         $( "#chat" ).submit(function( event ) {
-            let webMessage = {
-                message: '',
-                name: '',
-                userId: 'MADE UP',
-                matchId: 'MADE UP'
-            };
-            webMessage.name = $('#name').val().trim();
-            webMessage.message = $('#message').val().trim();
-            connection.send(JSON.stringify(webMessage));
+
+            let webMessage = {"userId":29,"chatterId":20,"message":"test","isRead":false};
+
+            postData("http://localhost:3000/chats", webMessage).then(value => {
+                console.error(value);
+            });
+            // https://love.duet-api.com/chats
             event.preventDefault();
         });
     }());
+
+
+    function postData(url = '', data = {}) {
+        // Default options are marked with *
+        return fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'no-cors', // no-cors, cors, *same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })
+            .then(response => response.json()); // parses JSON response into native JavaScript objects
+    }
 </script>
 </body>
 </html>

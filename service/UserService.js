@@ -104,23 +104,24 @@ class UserService {
     })).length > 0;
   }
 
-   chat(chat, res){
+  async chat(chat, res){
     chat.createdAt = new Date();
     chat.updateAt = new Date();
-    return Chat.create(chat)
-        .then(chatResponse => {
-          //flip it a reverse it
-          let temp = chat.userId;
-          chat.userId = chat.chatterId;
-          chat.chatterId = temp;
-          Chat.create(chat).then(value => res.send.status(201)).catch(error => res.status(400).send(error));
-        })
-        .catch(error => res.status(400).send(error));
+    return await Chat.create(chat);
+
+  }
+
+  async establishChatRelationship(chat, res) {
+    let temp = chat.userId;
+    chat.userId = chat.chatterId;
+    chat.chatterId = temp;
+    return await Chat.create(chat);
   }
 
 
-  async getMyChats(id, res) {
-    console.log('Finding users chat by id:'+ id)
+
+  async getMyChats(id, res,) {
+    console.log('Finding users chat by id:'+ id);
     return await Chat.findAll({
       where: {
         userId: id
@@ -132,6 +133,13 @@ class UserService {
 
   }
 
+  async getMyDuetChatsMessages(id, chatId) {
+
+    this.getMyDuetChats(id, chatId).then(value => {
+        value.user = this.getUser(chatId);
+        return value;
+    });
+  }
   async getMyDuetChats(id, chatId){
     return await Chat.findAll({
       where: {
