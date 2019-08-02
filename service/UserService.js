@@ -133,13 +133,6 @@ class UserService {
 
   }
 
-  async getMyDuetChatsMessages(id, chatId) {
-
-    this.getMyDuetChats(id, chatId).then(value => {
-        value.user = this.getUser(chatId);
-        return value;
-    });
-  }
   async getMyDuetChats(id, chatId){
     return await Chat.findAll({
       where: {

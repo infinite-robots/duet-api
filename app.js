@@ -77,8 +77,14 @@ app.route('/chats/:id')
 
 app.route('/chats/:id/duet/:chatId')
     .get((req, res)=> {
-        userService.getMyDuetChatsMessages(req.params.id, req.params.chatId).then(value => {
-            res.status(200).send(value);
+        userService.getMyDuetChats(req.params.id, req.params.chatId).then(value => {
+
+            userService.getUser(req.params.chatId).then(value1 => {
+                res.status(200).send({
+                    messages: value,
+                    chatter: value1
+                });
+            })
         }).catch(reason => {
             res.status(500).send(reason);
         })
