@@ -50,8 +50,8 @@ class CardService {
         }
     }
 
-    let bandsLength = newUser ? 6 : 3;
-    return shuffle([...bands.slice(0, 4), ...people]);
+    let bandsLength = newUser ? 10 : 3;
+    return shuffle([...bands.slice(0, bandsLength), ...people]);
   }
 }
 

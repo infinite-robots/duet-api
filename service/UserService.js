@@ -9,6 +9,8 @@ const Op = Sequelize.Op;
 
 const compassUtil = new CompassUtil();
 
+const maxSampleId = 22;
+
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -130,6 +132,18 @@ class UserService {
       match2[0].matched = true;
       await match1[0].save();
       await match2[0].save();
+      if (match2.user_id <= maxSampleId) {
+        setTimeout(async () => {
+          await Chat.create({
+            userId: match2.user_id,
+            chatterId: match1.user_id,
+            message: 'Hi!',
+            isRead: false,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          });
+        }, 3000);
+      }
     }
   }
 
@@ -240,7 +254,6 @@ class UserService {
   }
 
   async reset() {
-    const maxSampleId = 22;
     await User.destroy({
       where: {
         id: { [Op.gt]: maxSampleId }
