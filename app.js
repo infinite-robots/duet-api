@@ -101,6 +101,17 @@ app.route('/chats/:id/duet/:chatId/viewed')
         });
     });
 
+
+
+app.route('/interest-and-chats/:id/duet/:chatId/viewed')
+    .get((req, res) => {
+        userService.setPeopleInterestViewed(req.params.id, req.params.chatId).then(value => {
+            res.status(200).send();
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
+
 app.route('/chats-for-match/:id').get((req, res)=> {
     userService.getChatsForMatch(req.params.id).then(value => {
         res.status(200).send(value);
