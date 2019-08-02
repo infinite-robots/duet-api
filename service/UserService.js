@@ -145,11 +145,7 @@ class UserService {
   }
 
   async getLastChats(id) {
-    let chats = await Chat.findAll({where:{chatterId:id}});
-    let lastChats = [];
-    for(const chat of chats) {
-
-    }
+    return await db.sequelize.query("SELECT * FROM \"Chats\" WHERE id = (SELECT MAX(id) FROM \"Chats\" where \"chatterId\" = " + id, { type: Sequelize.QueryTypes.SELECT});
   }
 
   async getMatches(id) {
@@ -157,12 +153,19 @@ class UserService {
       "SELECT * FROM public.people_interests where \"user_id\" = "+ id, { type: Sequelize.QueryTypes.SELECT});
     let response = [];
     for(const match of matches) {
-      let message = 'WIP';
-      console.log('^^^^^^^^^^^^^^^' + JSON.stringify(message));
+      let lastMessages = await db.sequelize.query("SELECT * FROM \"Chats\" WHERE id = (SELECT MAX(id) FROM \"Chats\" where \"chatterId\" = " + id + ")", { type: Sequelize.QueryTypes.SELECT});
+
+      for (const lastMessage of lastMessages) {
+        if(lastMessage.userId === match.other_user_id) {
+          match.message = lastMessage.message;
+          break;
+        }
+      }
+
       response.push({
         id: match.other_user_id,
         viewed: match.viewed,
-        lastMessage: message
+        lastMessage: match.message
       });
     }
 
