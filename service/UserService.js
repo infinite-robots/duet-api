@@ -130,12 +130,27 @@ class UserService {
   }
 
 
+  async getChatsForMatch(id) {
+    console.log('Finding users chat by id:'+ id)
+    return await Chat.findAll({
+      where: {
+        userId: id
+      },order: [
+        ['createdAt', 'ASC']
+      ],
+      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
+    });
+
+  }
+
+
+
   /**
    * Gets a count of unread people_interests for your id
    * @param id
    * @returns {*}
    */
-   interestCount(id) {
+  interestCount(id) {
     return db.sequelize.query("SELECT COUNT(user_id) as interestCount FROM people_interests where user_id = "+ id + " AND viewed= false", { type: Sequelize.QueryTypes.SELECT});
   }
 
