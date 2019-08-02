@@ -44,7 +44,7 @@ class CompassUtil {
 
     // Score all genres
     DEFAULT_GENRES.forEach(function(genre) {
-      likes[genre].score = numberDisliked; // Default score to seed on
+      likes[genre].score = numberDisliked + numberLiked; // Default score to seed on
       likes[genre].score += likes[genre].likes;
       likes[genre].score -= likes[genre].dislikes;
       totalPoints += likes[genre].score;
@@ -52,7 +52,7 @@ class CompassUtil {
 
     // Normalize
     DEFAULT_GENRES.forEach(function(genre) {
-      compass[genre] = likes[genre].score / totalPoints * 100;
+      compass[genre] = Math.sqrt(likes[genre].score / totalPoints * 100) * 10;
     });
 
     return compass;

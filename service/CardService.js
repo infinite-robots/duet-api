@@ -28,7 +28,7 @@ class CardService {
       return CompassUtil.generate(await userService.getMusicInterest(cardSwipe.userId));
     } else {
       await userService.updateUserInterest(cardSwipe);
-      return { match: userService.checkMatch(cardSwipe.userId, cardSwipe.cardId) };
+      return { match: await userService.checkMatch(cardSwipe.userId, cardSwipe.cardId) };
     }
   }
 
