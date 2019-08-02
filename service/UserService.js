@@ -183,9 +183,8 @@ class UserService {
     return await Chat.findAll({
       where: {
         userId: id,
-        chatterId: chatId,
-        sender_id: id
-      },order: [
+        chatterId: chatId
+      }, order: [
         ['createdAt', 'ASC']
       ],
       attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt', 'sender_id']
@@ -201,6 +200,7 @@ class UserService {
   async setViewed(id, chatId) {
     return await db.sequelize.query("UPDATE \"Chats\"  SET \"isRead\" = true WHERE \"userId\" = "+id +" AND " + "\"chatterId\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
   }
+
 
 
   async setPeopleInterestViewed(id, chatId) {
