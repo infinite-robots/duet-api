@@ -1,5 +1,5 @@
 const DEFAULT_GENRES = ['hip-hop', 'country', 'rock', 'edm', 'pop', 'latin', 'podcast'];
-const DEFAULT_GENRE_SCORE = 100 / DEFAULT_GENRES.length;
+const DEFAULT_GENRE_SCORE = Math.sqrt(100 / DEFAULT_GENRES.length) * 10;
 
 class CompassUtil {
   constructor() {
@@ -32,6 +32,7 @@ class CompassUtil {
     let numberLiked = 0;
     let numberDisliked = 0;
     let totalPoints = 0;
+    let totalContrastPoints = 0;
 
     DEFAULT_GENRES.forEach(function(genre) {
       numberLiked += likes[genre].likes ? likes[genre].likes : 0;
@@ -47,12 +48,15 @@ class CompassUtil {
       likes[genre].score = numberDisliked + numberLiked; // Default score to seed on
       likes[genre].score += likes[genre].likes;
       likes[genre].score -= likes[genre].dislikes;
+      likes[genre].contrastScore = likes[genre].score - numberLiked;
       totalPoints += likes[genre].score;
+      totalContrastPoints += likes[genre].contrastScore;
     });
 
     // Normalize
     DEFAULT_GENRES.forEach(function(genre) {
-      compass[genre] = Math.sqrt(likes[genre].score / totalPoints * 100) * 10;
+      compass[genre] = ((Math.sqrt(likes[genre].score / totalPoints * 100) * 10)
+      + (((likes[genre].contrastScore / totalContrastPoints))*100) * 3) / 4 ;
     });
 
     return compass;
