@@ -160,6 +160,7 @@ class UserService {
     let temp = chat.userId;
     chat.userId = chat.chatterId;
     chat.chatterId = temp;
+    chat.sender_id = 0;
     return await Chat.create(chat);
   }
 
@@ -182,11 +183,12 @@ class UserService {
     return await Chat.findAll({
       where: {
         userId: id,
-        chatterId: chatId
+        chatterId: chatId,
+        sender_id: id
       },order: [
         ['createdAt', 'ASC']
       ],
-      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
+      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt', 'sender_id']
     });
   }
 
