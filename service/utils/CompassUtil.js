@@ -19,6 +19,7 @@ class CompassUtil {
         likes[interest.genre].dislikes++;
       }
     });
+    console.log('##### Likes' + JSON.stringify(likes));
     return this._likesToCompass(likes);
   }
 

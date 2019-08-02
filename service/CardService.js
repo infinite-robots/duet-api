@@ -23,8 +23,13 @@ class CardService {
 
   async swipe(cardSwipe) {
     console.log('swipe: ' + JSON.stringify(cardSwipe));
-    await userService.updateMusicInterest(cardSwipe);
-    return CompassUtil.generate(await userService.getMusicInterest(cardSwipe.userId));
+    if (cardSwipe.type === 'band') {
+      await userService.updateMusicInterest(cardSwipe);
+      return CompassUtil.generate(await userService.getMusicInterest(cardSwipe.userId));
+    } else {
+      await userService.updateUserInterest(cardSwipe);
+      return { match: userService.checkMatch(cardSwipe.userId, cardSwipe.cardId) };
+    }
   }
 
   async getStack(id) {
@@ -32,9 +37,14 @@ class CardService {
       .map(band => ({...band, type: 'band'}));
 
     const people = shuffle(JSON.parse(JSON.stringify(await userService.getUnseenUsers(id))))
-      .map(person => ({...person, type: 'person'}));
+      .map(person => ({...person, type: 'person'})).slice(0, 3);
 
-    return shuffle([...bands.slice(0, 4), ...people.slice(0, 3)]);
+
+    for (const person of people) {
+      person.compass = CompassUtil.generate(await userService.getMusicInterest(person.id));
+    }
+
+    return shuffle([...bands.slice(0, 4), ...people]);
   }
 }
 

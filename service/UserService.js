@@ -14,6 +14,9 @@ class UserService {
   }
 
   async updateMusicInterest(cardSwipe) {
+    if(!cardSwipe.genre){
+      return;
+    }
     return await MusicInterest.create({
       user_id: cardSwipe.userId,
       band_id: cardSwipe.cardId,
@@ -37,6 +40,7 @@ class UserService {
         }
       }
     }).filter(user => !interests.includes(user.id));
+
     return unseen;
   }
 
@@ -57,7 +61,7 @@ class UserService {
   async getMusicInterest(userId) {
     return MusicInterest.findAll({
       where: {
-        id: userId
+        user_id: userId
       }
     })
   }
@@ -68,6 +72,20 @@ class UserService {
         user_id: userId
       }
     });
+  }
+
+  async checkMatch(userId, otherUserId) {
+    return (await PeopleInterest.findAll({
+      where: {
+        user_id: userId,
+        other_user_id: otherUserId
+      }
+    })).length > 0 && (await PeopleInterest.findAll({
+      where: {
+        user_id: otherUserId,
+        other_user_id: userId
+      }
+    })).length > 0;
   }
 }
 
