@@ -198,6 +198,11 @@ class UserService {
 
     return await db.sequelize.query("UPDATE \"Chats\"  SET \"isRead\" = true WHERE \"userId\" = "+id +" AND " + "\"chatterId\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
   }
+
+
+  async setPeopleInterestViewed(id, chatId) {
+    return await db.sequelize.query("UPDATE \"people_interests\"  SET \"viewed\" = true WHERE \"user_id\" = "+id +" AND " + "\"other_user_id\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
+  }
   async getChatsForMatch(id) {
     return await Chat.findAll({
       where: {

@@ -63,7 +63,7 @@ app.route('/reset')
 app.route('/chats')
     .post((req, res) => {
         userService.chat(req.body, res).then(value => {
-            userService.establishChatRelationship(value, res).then(value1 => {
+            userService.establishChatRelationship(req.body, res).then(value1 => {
                 res.status(201).send(value1);
             })
         });
@@ -95,6 +95,17 @@ app.route('/chats/:id/duet/:chatId')
 app.route('/chats/:id/duet/:chatId/viewed')
     .get((req, res) => {
         userService.setViewed(req.params.id, req.params.chatId).then(value => {
+            res.status(200).send();
+        }).catch(error => {
+            res.status(500).send(error);
+        });
+    });
+
+
+
+app.route('/interest-and-chats/:id/duet/:chatId/viewed')
+    .get((req, res) => {
+        userService.setPeopleInterestViewed(req.params.id, req.params.chatId).then(value => {
             res.status(200).send();
         }).catch(error => {
             res.status(500).send(error);
