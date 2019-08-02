@@ -135,8 +135,8 @@ class UserService {
       if (match2.user_id <= maxSampleId) {
         setTimeout(async () => {
           await Chat.create({
-            userId: match2.user_id,
-            chatterId: match1.user_id,
+            userId: match2[0].user_id,
+            chatterId: match1[0].user_id,
             message: 'Hi!',
             isRead: false,
             createdAt: new Date(),
