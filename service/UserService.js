@@ -1,5 +1,6 @@
 const { CompassUtil } = require('./utils/CompassUtil.js');
 const User = require('../server/models').user;
+const MusicInterest = require('../server/models').music_interest;
 
 
 
@@ -26,6 +27,14 @@ class UserService {
         .create(user)
         .then(user => res.status(201).send(user))
         .catch(error => res.status(400).send(error));
+  }
+
+  async getMusicInterest(userId) {
+    return MusicInterest.findAll({
+      where: {
+        id: userId
+      }
+    })
   }
 }
 

@@ -23,7 +23,7 @@ app.route('/cards')
   })
 app.route('/cards/swipe')
   .post(function (req, res) {
-    cardService.swipe(req.body).then(cards => res.status(200).send(cards));
+    cardService.swipe(req.body).then(compass => res.status(200).send(compass));
   });
 
 

@@ -19,6 +19,7 @@ class CompassUtil {
         likes[intrest.genre].dislikes++;
       }
     });
+    return this._likesToCompass(likes);
   }
 
   static _emptyLikes() {
@@ -32,9 +33,13 @@ class CompassUtil {
     let totalPoints = 0;
 
     DEFAULT_GENRES.forEach(function(genre) {
-      numberLiked += genre.likes;
-      numberDisliked += genre.dislikes;
+      numberLiked += likes[genre].likes ? likes[genre].likes : 0;
+      numberDisliked += likes[genre].dislikes ? likes[genre].dislikes : 0;
     });
+
+    if(0 == (numberLiked + numberDisliked)) {
+      return this.default();
+    }
 
     // Score all genres
     DEFAULT_GENRES.forEach(function(genre) {
