@@ -26,6 +26,17 @@ class UserService {
       updatedAt: new Date()
     });
   }
+
+  async updateUserInterest(cardSwipe) {
+    return await PeopleInterest.create({
+      user_id: cardSwipe.userId,
+      other_user_id: cardSwipe.cardId,
+      matched: false,
+      liked: cardSwipe.swipe === 'right',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+  }
     
   async getUsers() {
     return await User.findAll();
