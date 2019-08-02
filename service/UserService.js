@@ -282,7 +282,7 @@ class UserService {
   }
 
   chatCount(id) {
-    return db.sequelize.query("SELECT COUNT(\"Chats\".\"userId\") as chatCount FROM \"Chats\" where isRead=false AND \"Chats\".\"userId\" =" + id, { type: Sequelize.QueryTypes.SELECT});
+    return db.sequelize.query("SELECT COUNT(\"Chats\".\"userId\") as chatCount FROM \"Chats\" where \"Chats\".\"isRead\"=false AND \"Chats\".\"userId\" =" + id, { type: Sequelize.QueryTypes.SELECT});
   }
 }
 
