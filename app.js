@@ -52,6 +52,10 @@ app.route('/bands')
     res.send(bandService.getBands());
   });
 
+app.route('/reset')
+  .get((req, res) => {
+    userService.reset().then(() => res.send('Ready for demo.'));
+  });
 
 
 //chat

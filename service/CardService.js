@@ -55,4 +55,4 @@ class CardService {
   }
 }
 
-module.exports = { CardService };
+module.exports = { CardService, shuffle };

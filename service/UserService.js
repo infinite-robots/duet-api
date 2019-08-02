@@ -5,10 +5,17 @@ const PeopleInterest = require('../server/models').people_interest;
 const Chat = require('../server/models').Chat;
 const db = require('../server/models');
 const Sequelize = require('sequelize');
-
 const Op = Sequelize.Op;
 
 const compassUtil = new CompassUtil();
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 class UserService {
   constructor() {
@@ -64,14 +71,28 @@ class UserService {
     return User.findByPk(id);
   }
 
-  addUser(user, res) {
+  async addUser(user, res) {
     user.createdAt = new Date();
     user.updatedAt = new Date();
     console.log("Saving" + JSON.stringify(user));
-    return User
+    const muhUser = await User
         .create(user)
-        .then(user => res.status(201).send(user))
+        .then(user => { res.status(201).send(user); return user; })
         .catch(error => res.status(400).send(error));
+    for (const otherUser of shuffle(
+        (await User.findAll())
+          .map(user => user.id))
+          .slice(0, 4)) {
+      await PeopleInterest.create({
+        user_id: otherUser,
+        other_user_id: muhUser.id,
+        matched: false,
+        liked: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+    }
+    return user;
   }
 
   async getMusicInterest(userId) {
@@ -91,17 +112,25 @@ class UserService {
   }
 
   async checkMatch(userId, otherUserId) {
-    return (await PeopleInterest.findAll({
+    const match1 = await PeopleInterest.findAll({
       where: {
         user_id: userId,
         other_user_id: otherUserId
       }
-    })).length > 0 && (await PeopleInterest.findAll({
+    });
+    const match2 = await PeopleInterest.findAll({
       where: {
         user_id: otherUserId,
         other_user_id: userId
       }
-    })).length > 0;
+    });
+
+    if (match1.length > 0 && match2.length > 0) {
+      match1[0].matched = true;
+      match2[0].matched = true;
+      await match1[0].save();
+      await match2[0].save();
+    }
   }
 
    chat(chat, res){
@@ -199,7 +228,17 @@ class UserService {
     return matches;
   }
 
-
+  async reset() {
+    const maxSampleId = 22;
+    await User.destroy({
+      where: {
+        id: { [Op.gt]: maxSampleId }
+      }
+    });
+    await MusicInterest.truncate();
+    await PeopleInterest.truncate();
+    await Chat.truncate();
+  }
 
   /**
    * Gets a count of unread people_interests for your id
