@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<form id="chat">
+    name: <input id="name" type="text" name="fname"><br>
+    message: <input id="message" type="text" name="lname"><br>
+    <input type="submit">
+</form>
+
+
+<div >
+    <ul id="messages">
+
+    </ul>
+</div>
+
+<script>
+    (function () {
+        // if user is running mozilla then use it's built-in WebSocket
+        window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+        var connection = new WebSocket('ws://127.0.0.1:1337');
+
+        connection.onopen = function () {
+            // connection is opened and ready to use
+            console.log("Connected to ", connection);
+        };
+
+        connection.onerror = function (error) {
+            // an error occurred when sending/receiving data
+            console.log(error)
+        };
+
+        connection.onmessage = function (message) {
+            // try to decode json (I assume that each message
+            let parsedMessage = JSON.parse(message.data);
+            $('#messages').append(`<li>${parsedMessage.name} : ${parsedMessage.message} MatchId: ${parsedMessage.matchId}</li>`)
+            // handle incoming message
+        };
+
+        $( "#chat" ).submit(function( event ) {
+            let webMessage = {
+                message: '',
+                name: '',
+                userId: 'MADE UP',
+                matchId: 'MADE UP'
+            };
+            webMessage.name = $('#name').val().trim();
+            webMessage.message = $('#message').val().trim();
+            connection.send(JSON.stringify(webMessage));
+            event.preventDefault();
+        });
+    }());
+</script>
+</body>
+</html>

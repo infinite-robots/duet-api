@@ -51,7 +51,6 @@ class UserService {
       createdAt: new Date(),
       updatedAt : new Date()
     };
-    console.error("Saving", userDto);
     return User
         .create(userDto)
         .then(user => res.status(201).send(user))
