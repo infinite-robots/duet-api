@@ -33,7 +33,7 @@ class UserService {
   }
 
   async updateUserInterest(cardSwipe) {
-    return await PeopleInterest..create({
+    return await PeopleInterest.create({
       user_id: cardSwipe.userId,
       other_user_id: cardSwipe.cardId,
       matched: false,
@@ -132,7 +132,6 @@ class UserService {
 
   }
 
-
   async getChatsForMatch(id) {
     return await Chat.findAll({
       where: {
@@ -143,6 +142,46 @@ class UserService {
       group: ['chatterId'],
       attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
     });
+  }
+
+  async getLastChats(id) {
+    let chats = await Chat.findAll({where:{chatterId:id}});
+    let lastChats = [];
+    for(const chat of chats) {
+
+    }
+  }
+
+  async getMatches(id) {
+    let matches = await db.sequelize.query(
+      "SELECT * FROM public.people_interests where \"user_id\" = "+ id, { type: Sequelize.QueryTypes.SELECT});
+    let response = [];
+    for(const match of matches) {
+      let message = 'WIP';
+      console.log('^^^^^^^^^^^^^^^' + JSON.stringify(message));
+      response.push({
+        id: match.other_user_id,
+        viewed: match.viewed,
+        lastMessage: message
+      });
+    }
+
+    matches = response;
+
+    let people = await User.findAll();
+
+    for (const match of matches) {
+      for (const person of people) {
+        if(person.id === match.id) {
+          match.name = person.name;
+          match.age = person.age;
+          match.img = person.img;
+          break;
+        }
+      }
+    }
+
+    return matches;
   }
 
 

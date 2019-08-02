@@ -35,6 +35,11 @@ app.route('/users/:id')
     userService.getUser(req.params.id).then(user => res.send(user));
   });
 
+app.route('/users/:id/matches')
+  .get((req, res) => {
+    userService.getMatches(req.params.id).then(user => res.send(user));
+  });
+
 app.route('/users')
   .get((req, res)=> {
       userService.getUsers().then(users => res.send(users));
