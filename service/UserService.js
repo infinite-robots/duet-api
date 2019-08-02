@@ -1,8 +1,10 @@
 const { CompassUtil } = require('./utils/CompassUtil.js');
 const User = require('../server/models').user;
 const MusicInterest = require('../server/models').music_interest;
+const PeopleInterest = require('../server/models').people_interest;
+const Sequelize = require('sequelize');
 
-
+const Op = Sequelize.Op;
 
 const compassUtil = new CompassUtil();
 
@@ -26,6 +28,18 @@ class UserService {
     return await User.findAll();
   }
 
+  async getUnseenUsers(id) {
+    const interests = (await this.getUserInterests(id)).map(user => user.other_user_id);
+    const unseen = await User.findAll({
+      where: {
+        id: {
+          [Op.ne]: Number(id)
+        }
+      }
+    }).filter(user => !interests.includes(user.id));
+    return unseen;
+  }
+
   getUser(id) {
     return User.findByPk(id);
   }
@@ -46,6 +60,14 @@ class UserService {
         id: userId
       }
     })
+  }
+
+  async getUserInterests(userId) {
+    return await PeopleInterest.findAll({
+      where: {
+        user_id: userId
+      }
+    });
   }
 }
 

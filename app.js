@@ -22,9 +22,9 @@ app.get('/', function (req, res) {
 });
 
 
-app.route('/cards')
+app.route('/cards/:id')
   .get((req, res) => {
-    cardService.getStack().then(cards => res.status(200).send(cards));
+    cardService.getStack(req.params.id).then(cards => res.status(200).send(cards));
   })
 app.route('/cards/swipe')
   .post(function (req, res) {
@@ -34,7 +34,7 @@ app.route('/cards/swipe')
 
 app.route('/users/:id')
   .get((req, res) => {
-    userService.getUser(req.params.id,).then(user => res.send(user));
+    userService.getUser(req.params.id).then(user => res.send(user));
   });
 
 app.route('/users')
