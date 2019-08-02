@@ -203,7 +203,7 @@ class UserService {
 
 
   async setPeopleInterestViewed(id, chatId) {
-    return await db.sequelize.query("UPDATE \"people_interests\"  SET \"viewed\" = true WHERE \"user_id\" = "+id +" AND " + "\"other_user_id\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
+    return await db.sequelize.query("UPDATE \"people_interests\"  SET \"viewed\" = true WHERE \"user_id\" = "+id, { type: Sequelize.QueryTypes.UPDATE});
   }
   async getChatsForMatch(id) {
     return await Chat.findAll({
