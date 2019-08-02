@@ -17,6 +17,9 @@ class UserService {
     if(!cardSwipe.genre){
       return;
     }
+
+    //if(!(await MusicInterest.find({where: {}}))) TODO
+
     return await MusicInterest.create({
       user_id: cardSwipe.userId,
       band_id: cardSwipe.cardId,
@@ -28,7 +31,7 @@ class UserService {
   }
 
   async updateUserInterest(cardSwipe) {
-    return await PeopleInterest.create({
+    return await PeopleInterest..create({
       user_id: cardSwipe.userId,
       other_user_id: cardSwipe.cardId,
       matched: false,
