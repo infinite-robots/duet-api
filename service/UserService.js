@@ -10,6 +10,17 @@ class UserService {
   constructor() {
     //
   }
+
+  async updateMusicInterest(cardSwipe) {
+    return await MusicInterest.create({
+      user_id: cardSwipe.userId,
+      band_id: cardSwipe.cardId,
+      genre: cardSwipe.genre,
+      liked: cardSwipe.swipe === 'right',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+  }
     
   async getUsers() {
     return await User.findAll();

@@ -1,4 +1,4 @@
-const DEFAULT_GENRES = ['hiphop', 'country', 'rock', 'edm', 'pop', 'rnb', 'latin', 'podcast'];
+const DEFAULT_GENRES = ['hip-hop', 'country', 'rock', 'edm', 'pop', 'latin', 'podcast'];
 const DEFAULT_GENRE_SCORE = 100 / DEFAULT_GENRES.length;
 
 class CompassUtil {
@@ -10,20 +10,20 @@ class CompassUtil {
     return DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: DEFAULT_GENRE_SCORE}), {});
   }
 
-  static generate(intrests) {
+  static generate(interests) {
     let likes = this._emptyLikes();
-    intrests.forEach(function(intrest) {
-      if(intrest.liked) {
-        likes[intrest.genre].likes++;
+    interests.forEach((interest) => {
+      if(interest.liked) {
+        likes[interest.genre].likes++;
       } else {
-        likes[intrest.genre].dislikes++;
+        likes[interest.genre].dislikes++;
       }
     });
     return this._likesToCompass(likes);
   }
 
   static _emptyLikes() {
-    return DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: {like:0, dislike:0}}), {});
+    return DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: {likes:0, dislikes:0}}), {});
   }
 
   static _likesToCompass(likes) {

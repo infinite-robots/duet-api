@@ -13,6 +13,7 @@ class CardService {
 
   async swipe(cardSwipe) {
     console.log('swipe: ' + JSON.stringify(cardSwipe));
+    await userService.updateMusicInterest(cardSwipe);
     return CompassUtil.generate(await userService.getMusicInterest(cardSwipe.userId));
   }
     
@@ -32,9 +33,6 @@ class CardService {
       ...bands,
       ...people
     ];
-
-
-
     return cards;
   }
 }
