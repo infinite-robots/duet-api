@@ -132,6 +132,18 @@ class UserService {
 
   }
 
+  async getMyDuetChats(id, chatId){
+    return await Chat.findAll({
+      where: {
+        userId: id,
+        chatterId: chatId
+      },order: [
+        ['createdAt', 'ASC']
+      ],
+      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
+    });
+  }
+
   async getChatsForMatch(id) {
     return await Chat.findAll({
       where: {
