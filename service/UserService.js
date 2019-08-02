@@ -1,5 +1,6 @@
 const { CompassUtil } = require('./utils/CompassUtil.js');
 const User = require('../server/models').user;
+const MusicInterest = require('../server/models').music_interest;
 
 
 
@@ -10,51 +11,30 @@ class UserService {
     //
   }
     
-  getUsers() {
-    let users = [];
-    users.push({
-      id:'1234',
-      name:'Jenn',
-      age:34,
-      bio:'Hello Duet',
-      links: {
-        img:'https://images.unsplash.com/photo-1446040945968-d303ecb10b4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-        audio: 'http://google.com'
-      },
-      compass:CompassUtil.getDefaultCompass()
-    });
-    return users;
+  async getUsers() {
+    return await User.findAll();
   }
 
   getUser(id) {
-    let user;
-    user = {
-      id: id,
-      name:'Jenn',
-      age:34,
-      bio:'Hello Duet',
-      links: {
-        img:'https://images.unsplash.com/photo-1446040945968-d303ecb10b4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-        audio: 'http://google.com'
-      },
-      compass: CompassUtil.getDefaultCompass()
-    };
-    return user;
+    return User.findByPk(id);
   }
 
-  addUser(req,res) {
-    let userDto = {
-      name: req.body.name,
-      bio: req.body.bio,
-      gender: req.body.gender,
-      age: req.body.age,
-      createdAt: new Date(),
-      updatedAt : new Date()
-    };
+  addUser(user, res) {
+    user.createdAt = new Date();
+    user.updatedAt = new Date();
+    console.log("Saving" + JSON.stringify(user));
     return User
-        .create(userDto)
+        .create(user)
         .then(user => res.status(201).send(user))
         .catch(error => res.status(400).send(error));
+  }
+
+  async getMusicInterest(userId) {
+    return MusicInterest.findAll({
+      where: {
+        id: userId
+      }
+    })
   }
 }
 
