@@ -39,6 +39,15 @@ class CompassUtil {
       numberDisliked += likes[genre].dislikes ? likes[genre].dislikes : 0;
     });
 
+    let magnitude = 5;
+    magnitude = 10 - (((numberLiked + numberDisliked)/5) * 5);
+    if(magnitude > 10) {
+      magnitude = 10;
+    }
+    if(magnitude < 5) {
+      magnitude = 5;
+    }
+
     if(0 == (numberLiked + numberDisliked)) {
       return this.default();
     }
@@ -47,8 +56,8 @@ class CompassUtil {
     DEFAULT_GENRES.forEach(function(genre) {
       // likes[genre].score = numberDisliked + numberLiked; // Default score to seed on
       likes[genre].score = 50;
-      likes[genre].score += likes[genre].likes * 5;
-      likes[genre].score -= likes[genre].dislikes * 5;
+      likes[genre].score += likes[genre].likes * magnitude;
+      likes[genre].score -= likes[genre].dislikes * magnitude;
       // likes[genre].contrastScore = likes[genre].score - numberLiked;
       // totalPoints += likes[genre].score;
       // totalContrastPoints += likes[genre].contrastScore;
