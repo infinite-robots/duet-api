@@ -81,16 +81,15 @@ app.route('/chats/:id')
 
 app.route('/chats/:id/duet/:chatId')
     .get((req, res)=> {
-        userService.getMyDuetChats(req.params.id, req.params.chatId).then(value => {
-            userService.getUser(req.params.chatId).then(value1 => {
-                res.status(200).send({
-                    messages: value,
-                    chatter: value1
-                });
-            })
+        userService.getMyDuetChats(req.params.id, req.params.chatId).then(async messages => {
+            return { messages, messageReverse: await userService.getMyDuetChats(req.params.chatId, req.params.id) };
+        }).then(async data => {
+            return { ...data, chatter: await userService.getUser(req.params.chatId) };
+        }).then(data => {
+            res.status(200).send(data);
         }).catch(reason => {
             res.status(500).send(reason);
-        })
+        });
     });
 app.route('/chats/:id/duet/:chatId/viewed')
     .get((req, res) => {
