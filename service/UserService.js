@@ -127,6 +127,8 @@ class UserService {
       }
     });
 
+    const openers = ['Hey, what are you listening to?','Heyy','Cool voice bio!','This is my first time on Duet! :)'];
+
     if (match1.length > 0 && match2.length > 0) {
       match1[0].matched = true;
       match2[0].matched = true;
@@ -137,7 +139,7 @@ class UserService {
           await Chat.create({
             userId: match2[0].user_id,
             chatterId: match1[0].user_id,
-            message: 'Hi!',
+            message: openers[Math.floor(Math.random() * openers.length)],
             isRead: false,
             createdAt: new Date(),
             updatedAt: new Date()
