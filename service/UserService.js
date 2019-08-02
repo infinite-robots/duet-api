@@ -134,7 +134,7 @@ class UserService {
       match2[0].matched = true;
       await match1[0].save();
       await match2[0].save();
-      if (match2.user_id <= maxSampleId) {
+      if (match2[0].user_id <= maxSampleId) {
         setTimeout(async () => {
           await Chat.create({
             userId: match2[0].user_id,
