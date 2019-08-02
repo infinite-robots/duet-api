@@ -6,9 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-var WebSocketServer = require('websocket').server;
-
-var http = require('http');
+"use strict";
 const { CardService } = require('./service/CardService.js');
 const { UserService } = require('./service/UserService.js');
 const { BandService } = require('./service/BandService.js');
@@ -25,7 +23,7 @@ app.get('/', function (req, res) {
 app.route('/cards/:id')
   .get((req, res) => {
     cardService.getStack(req.params.id).then(cards => res.status(200).send(cards));
-  })
+  });
 app.route('/cards/swipe')
   .post(function (req, res) {
     cardService.swipe(req.body).then(compass => res.status(200).send(compass));
@@ -50,6 +48,39 @@ app.route('/bands')
   });
 
 
+
+//chat
+
+app.route('/chats')
+    .post((req, res) => {
+        userService.chat(req.body, res);
+    });
+
+app.route('/chats/:id')
+    .get((req, res)=> {
+        userService.getMyChats(req.params.id).then(value => {
+            res.status(200).send(value);
+        }).catch(reason => {
+            res.status(500).send(reason);
+        })
+    });
+
+app.route('/interest-and-chats/:id')
+    .get((req, res) => {
+        userService.interestCount(req.params.id).then(value => {
+            userService.chatCount(req.params.id).then(chatVal => {
+                let val = value[0];
+                val.chatcount = chatVal[0].chatcount;
+                res.status(200).send(val);
+            }).catch(reason => {
+                res.status(500).send(reason);
+            });
+
+        }).catch(reason => {
+            res.status(500).send(reason);
+        });
+    });
+
 const port = process.env.PORT || 3000;
 
 const server = app.listen(port, function () {
@@ -59,77 +90,3 @@ const server = app.listen(port, function () {
 
 
 
-
-
-
-
-
-
-"use strict";
-// Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'node-chat';
-// Port where we'll run the websocket server
-var webSocketsServerPort = 1337;
-// list of currently connected clients (users)
-var clients = [ ];
-/**
- * HTTP server
- */
-var webSocketServer = http.createServer(function(request, response) {
-    // Not important for us. We're writing WebSocket server,
-    // not HTTP server
-});
-webSocketServer.listen(webSocketsServerPort, function() {
-    console.log((new Date()) + " Server is listening on port "
-        + webSocketsServerPort);
-});
-/**
- * WebSocket server
- */
-var wsServer = new WebSocketServer({
-    // WebSocket server is tied to a HTTP server. WebSocket
-    httpServer: webSocketServer,
-    origins: '*:*'
-
-});
-// This callback function is called every time someone
-// tries to connect to the WebSocket server
-wsServer.on('request', function(request) {
-    console.log((new Date()) + ' Connection from origin '
-        + request.origin + '.');
-    // accept connection - you should check 'request.origin' to
-    // make sure that client is connecting from your website
-    // (http://en.wikipedia.org/wiki/Same_origin_policy)
-    var connection = request.accept(null, request.origin);
-    // we need to know client index to remove them on 'close' event
-    var index = clients.push(connection) - 1;
-    var userName = false;
-    console.log((new Date()) + ' Connection accepted.');
-
-    // user sent some message
-    connection.on('message', function(message) {
-        console.log(decode_utf8(message.utf8Data));
-        let messageObject = JSON.parse(decode_utf8(message.utf8Data));
-        console.log(messageObject.name);
-        console.log(messageObject.matchId);
-        console.log(messageObject.message);
-        if (message.type === 'utf8') { // accept only text
-            // first message sent by user is their name
-            // get random color and send it back to the user
-            for (var i=0; i < clients.length; i++) {
-                clients[i].send(JSON.stringify(messageObject));
-            }
-            console.log((new Date()) + ' User is known as: ' + userName
-                    + ' with type '+ message.type);
-        }
-    });
-    // user disconnected
-    connection.on('close', function(connection) {
-
-    });
-});
-
-
-function decode_utf8(s) {
-    return decodeURIComponent(escape(s));
-}
