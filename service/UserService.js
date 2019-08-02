@@ -2,6 +2,8 @@ const { CompassUtil } = require('./utils/CompassUtil.js');
 const User = require('../server/models').user;
 const MusicInterest = require('../server/models').music_interest;
 const PeopleInterest = require('../server/models').people_interest;
+const Chat = require('../server/models').Chat;
+const db = require('../server/models');
 const Sequelize = require('sequelize');
 
 const Op = Sequelize.Op;
@@ -100,6 +102,62 @@ class UserService {
         other_user_id: userId
       }
     })).length > 0;
+  }
+
+   chat(chat, res){
+    chat.createdAt = new Date();
+    chat.updateAt = new Date();
+    return Chat.create(chat)
+        .then(chatResponse => {
+          //flip it a reverse it
+          let temp = chat.userId;
+          chat.userId = chat.chatterId;
+          chat.chatterId = temp;
+          Chat.create(chat).then(value => res.send.status(201)).catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+  }
+
+
+  async getMyChats(id, res) {
+    console.log('Finding users chat by id:'+ id)
+    return await Chat.findAll({
+      where: {
+        userId: id
+      },order: [
+        ['createdAt', 'ASC']
+      ],
+      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
+    });
+
+  }
+
+
+  async getChatsForMatch(id) {
+    return await Chat.findAll({
+      where: {
+        userId: id
+      },order: [
+        ['createdAt', 'ASC']
+      ],
+      group: ['chatterId'],
+      attributes: ['userId', 'chatterId', 'message', 'isRead', 'createdAt']
+    });
+  }
+
+
+
+  /**
+   * Gets a count of unread people_interests for your id
+   * @param id
+   * @returns {*}
+   */
+  interestCount(id) {
+    return db.sequelize.query("SELECT COUNT(user_id) as interestCount FROM people_interests where user_id = "+ id + " AND viewed= false", { type: Sequelize.QueryTypes.SELECT});
+  }
+
+  chatCount(id) {
+    return db.sequelize.query("SELECT COUNT(\"Chats\".\"userId\") as chatCount FROM \"Chats\" where \"Chats\".\"userId\" =" + id, { type: Sequelize.QueryTypes.SELECT});
   }
 }
 
