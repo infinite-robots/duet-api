@@ -78,7 +78,6 @@ app.route('/chats/:id')
 app.route('/chats/:id/duet/:chatId')
     .get((req, res)=> {
         userService.getMyDuetChats(req.params.id, req.params.chatId).then(value => {
-
             userService.getUser(req.params.chatId).then(value1 => {
                 res.status(200).send({
                     messages: value,
@@ -88,6 +87,14 @@ app.route('/chats/:id/duet/:chatId')
         }).catch(reason => {
             res.status(500).send(reason);
         })
+    });
+app.route('/chats/:id/duet/:chatId/viewed')
+    .get((req, res) => {
+        userService.setViewed(req.params.id, req.params.chatId).then(value => {
+            res.status(200).send();
+        }).catch(error => {
+            res.status(500).send(error);
+        });
     });
 
 app.route('/chats-for-match/:id').get((req, res)=> {

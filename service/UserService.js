@@ -145,6 +145,16 @@ class UserService {
     });
   }
 
+  /**
+   *
+   * @param id
+   * @param chatId
+   * @returns {Promise<*>}
+   */
+  async setViewed(id, chatId) {
+
+    return await db.sequelize.query("UPDATE \"Chats\"  SET \"isRead\" = true WHERE \"userId\" = "+id +" AND " + "\"chatterId\"="+ chatId, { type: Sequelize.QueryTypes.UPDATE});
+  }
   async getChatsForMatch(id) {
     return await Chat.findAll({
       where: {
