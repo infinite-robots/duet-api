@@ -17,7 +17,7 @@ class CardService {
   }
     
   async getStack() {
-    let bands = await bandService.getBands();
+    let bands = JSON.parse(JSON.stringify(await bandService.getBands()));
     let people = JSON.parse(JSON.stringify(await userService.getUsers()));
 
     people.forEach(person => {
