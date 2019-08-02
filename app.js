@@ -18,23 +18,23 @@ app.get('/', function (req, res) {
 
 
 app.route('/cards')
-  .get(function (req, res) {
-    res.status(200).send(cardService.getStack());
+  .get((req, res) => {
+    cardService.getStack().then(cards => res.status(200).send(cards));
   })
 app.route('/cards/swipe')
   .post(function (req, res) {
-    res.status(200).send(cardService.swipe(req.body));
+    cardService.swipe(req.body).then(cards => res.status(200).send(cards));
   });
 
 
 app.route('/users/:id')
   .get((req, res) => {
-    userService.getUser(req.params.id).then(user => res.send(user));
+    userService.getUser(req.params.id,).then(user => res.send(user));
   });
 
 app.route('/users')
   .get((req, res)=> {
-      res.send(userService.getUsers());
+      userService.getUsers().then(users => res.send(users));
   }).post((req, res) => {
     userService.addUser(req.body, res);
   });

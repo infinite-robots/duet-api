@@ -10,23 +10,11 @@ class UserService {
     //
   }
     
-  getUsers() {
-    let users = [];
-    users.push({
-      id:'1234',
-      name:'Jenn',
-      age:34,
-      bio:'Hello Duet',
-      links: {
-        img:'https://images.unsplash.com/photo-1446040945968-d303ecb10b4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-        audio: 'http://google.com'
-      },
-      compass:CompassUtil.getDefaultCompass()
-    });
-    return users;
+  async getUsers() {
+    return await User.findAll();
   }
 
-  getUser(id, res) {
+  getUser(id) {
     return User.findByPk(id);
   }
 

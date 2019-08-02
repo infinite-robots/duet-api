@@ -29,7 +29,6 @@ class CompassUtil {
     let compass = this.default();
     let numberLiked = 0;
     let numberDisliked = 0;
-    let totalLikesAndDislikes = 0;
     let totalPoints = 0;
 
     DEFAULT_GENRES.forEach(function(genre) {
@@ -37,11 +36,9 @@ class CompassUtil {
       numberDisliked += genre.dislikes;
     });
 
-    totalLikesAndDislikes = numberDisliked + numberLiked;
-
     // Score all genres
     DEFAULT_GENRES.forEach(function(genre) {
-      likes[genre].score = totalLikesAndDislikes;
+      likes[genre].score = numberDisliked; // Default score to seed on
       likes[genre].score += likes[genre].likes;
       likes[genre].score -= likes[genre].dislikes;
       totalPoints += likes[genre].score;
