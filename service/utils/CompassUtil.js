@@ -1,16 +1,17 @@
 const DEFAULT_GENRES = ['hip-hop', 'country', 'rock', 'edm', 'pop', 'latin', 'podcast'];
-const DEFAULT_GENRE_SCORE = Math.sqrt(100 / DEFAULT_GENRES.length) * 10;
+const DEFAULT_GENRE_SCORE = 50;
 
 class CompassUtil {
   constructor() {
     //
   }
     
-  static default() {
-    return DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: DEFAULT_GENRE_SCORE}), {});
+  static default(isNpc) {
+    let compass = DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: isNpc ? DEFAULT_GENRE_SCORE : Math.sqrt(Math.random() * 100) * 10 }), {});
+    return compass;
   }
 
-  static generate(interests) {
+  static generate(interests, isNpc) {
     let likes = this._emptyLikes();
     interests.forEach((interest) => {
       if(interest.liked) {
@@ -19,16 +20,15 @@ class CompassUtil {
         likes[interest.genre].dislikes++;
       }
     });
-    console.log('##### Likes' + JSON.stringify(likes));
-    return this._likesToCompass(likes);
+    return this._likesToCompass(likes, isNpc);
   }
 
   static _emptyLikes() {
     return DEFAULT_GENRES.reduce((obj, genre) => ({...obj, [genre]: {likes:0, dislikes:0}}), {});
   }
 
-  static _likesToCompass(likes) {
-    let compass = this.default();
+  static _likesToCompass(likes, isNpc) {
+    let compass = this.default(isNpc);
     let numberLiked = 0;
     let numberDisliked = 0;
     let totalPoints = 0;
