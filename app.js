@@ -63,7 +63,7 @@ app.route('/reset')
 app.route('/chats')
     .post((req, res) => {
         userService.chat(req.body, res).then(value => {
-            userService.establishChatRelationship(value, res).then(value1 => {
+            userService.establishChatRelationship(req.body, res).then(value1 => {
                 res.status(201).send(value1);
             })
         });
